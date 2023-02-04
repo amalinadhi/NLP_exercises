@@ -103,6 +103,28 @@ def predict(test, bigram_matrix_prob):
 
     return total_proba
 
+def predictNextWord(n_best, test, bigram_matrix_prob, word_corpus):
+    n = len(word_corpus)
+    predict_proba_list = np.zeros(n)
+
+    # Iterate the whole word corpus
+    for i in range(n):
+        test_i = test + " " + word_corpus[i]
+        predict_proba_test = predict(test = test_i,
+                                     bigram_matrix_prob = bigram_matrix_prob)
+        predict_proba_list[i] = predict_proba_test
+
+    # Sort & return index
+    sorted_indices = np.argsort(predict_proba_list)
+    best_indices = sorted_indices[::-1][:n_best]
+
+    # Print next word probability
+    most_probable_next_word = word_corpus[best_indices]
+    most_probable_proba = predict_proba_list[best_indices]
+    for i in range(n_best):
+        print(f"{test + ' ' + most_probable_next_word[i]}, \t proba : {most_probable_proba[i]:.4f}")
+
+
 
 
 if __name__ == "__main__":
@@ -114,11 +136,17 @@ if __name__ == "__main__":
     bigram_matrix_prob = trainBigram(list_corpus = list_corpus)
 
     # Predict
-    TEST = "can you give me"
+    TEST = "I'd like"
     test_proba = predict(test = TEST,
                          bigram_matrix_prob = bigram_matrix_prob)
     
-    print(f"Sentence                : {TEST}")
-    print(f"Probability to occur    : {test_proba:.4f}")
+    print("Current sentence")
+    print(f"{TEST}, \t proba : {test_proba:.4f}")
 
-    
+    # Predict next word probability
+    print("")
+    print("Next word probability")
+    predictNextWord(n_best = 10,
+                    test = TEST,
+                    bigram_matrix_prob = bigram_matrix_prob,
+                    word_corpus = corpus_word_list)
