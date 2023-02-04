@@ -47,26 +47,26 @@ def extractWordCorpus(list_corpus):
     return corpus_word_list, corpus_word_count
 
 def extractBigramMatrix(corpus_word_list, list_corpus):
+    # Generate initial bigram matrix
     n = len(corpus_word_list)
-    
     bigram_matrix = np.zeros((n, n))
+    bigram_matrix = pd.DataFrame(data = bigram_matrix,
+                           columns = corpus_word_list,
+                           index = corpus_word_list)
 
-    # Looping in all sentences
+    # Iterate for every sentence
     for sentence in list_corpus:
-        # Extract word list
-        word_list = extractUniqueWord(sentence = sentence)
+        # Extract word list (non unique)
+        sentence = sentence.lower()
+        #word_list = sentence.split(" ")
+        word_list = sentence.split(" ")[1:]
 
-        # Loop for each first & next word
-        for i, first_word in enumerate(corpus_word_list):
-            for j, next_word in enumerate(corpus_word_list):
-                # Iterate over word
-                for k in range(len(word_list)-1):
-                    condition_1 = word_list[k] == first_word
-                    condition_2 = word_list[k+1] == next_word
-                    
-                    # If condition 1 & 2 achieved, then
-                    if condition_1 and condition_2:
-                        bigram_matrix[j, i] += 1
+        # Create 2-pair of word for each sentence
+        word_pair_list = [word_list[i:i+2] for i in range(len(word_list)-1)]
+
+        # Add every pair to the bigram matrix
+        for word_pair in word_pair_list:
+            bigram_matrix[word_pair[0]][word_pair[1]] += 1
 
     return bigram_matrix
 
