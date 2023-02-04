@@ -11,12 +11,18 @@ def readData(filename):
 
     return df
 
+def removeWord(word_list, char_to_remove):
+    for char in char_to_remove:
+        word_list = [x for x in word_list if char not in x]
+
+    return word_list
+
 def extractUniqueWord(sentence):
     # Normalize
     sentence = sentence.lower()
 
     # Obtain word list
-    #word_list = sentence.split(" ")   # if you training with non berkeley data
+    #word_list = sentence.split(" ")
     word_list = sentence.split(" ")[1:]
 
     return word_list            
@@ -33,16 +39,17 @@ def extractWordCorpus(list_corpus):
 
     # Remove unused elements
     # Use these depend on the case
-    corpus_word_list = [x for x in corpus_word_list if "." not in x]
-    corpus_word_list = [x for x in corpus_word_list if "<" not in x]
-    corpus_word_list = [x for x in corpus_word_list if "[" not in x]
-    corpus_word_list = [x for x in corpus_word_list if "_" not in x]
-    corpus_word_list = [x for x in corpus_word_list if "-" not in x]
-    
+    char_to_remove = ["!", ".", "(", ")", "*", "-", "<", ">",
+                      "[", "]", "{", "}", "_", "?"]
+    corpus_word_list = removeWord(word_list = corpus_word_list,
+                                  char_to_remove = char_to_remove)
+
     # Remove duplicate words
     corpus_word_list, corpus_word_count = np.unique(corpus_word_list,
                                                     return_counts = True)
-    corpus_word_list.sort()
+    
+    corpus_word_list = corpus_word_list[1:]
+    corpus_word_count = corpus_word_count[1:]
 
     return corpus_word_list, corpus_word_count
 
@@ -66,10 +73,11 @@ def extractBigramMatrix(corpus_word_list, list_corpus):
 
         # Add every pair to the bigram matrix
         for word_pair in word_pair_list:
-            bigram_matrix[word_pair[0]][word_pair[1]] += 1
+            if (word_pair[0] in corpus_word_list) & (word_pair[1] in corpus_word_list):
+                bigram_matrix[word_pair[0]][word_pair[1]] += 1
 
     return bigram_matrix
-
+    
 def trainBigram(list_corpus):
     # Extract corpus word list    
     corpus_word_list, corpus_word_count = extractWordCorpus(list_corpus = list_corpus)
@@ -126,17 +134,21 @@ def predictNextWord(n_best, test, bigram_matrix_prob, word_corpus):
 
 
 
-
 if __name__ == "__main__":
     # Read corpus
-    FILENAME = "dataset/berkeley_restaurant_transcripts_small.csv"
+    FILENAME = "dataset/berkeley_restaurant_transcripts.csv"
     list_corpus = readData(filename = FILENAME)
 
     # Train bigram
-    bigram_matrix_prob = trainBigram(list_corpus = list_corpus)
-
+    #bigram_matrix_prob = trainBigram(list_corpus = list_corpus)
+    #bigram_matrix_prob.to_pickle("dataset/bigram_matrix_prob_BRT.pickle")       # To save the bigram matrix
+    
+    # Load bigram
+    bigram_matrix_prob = pd.read_pickle("dataset/bigram_matrix_prob_BRT.pickle")
+    corpus_word_list = bigram_matrix_prob.columns
+    
     # Predict
-    TEST = "I'd like"
+    TEST = "I want to eat"
     test_proba = predict(test = TEST,
                          bigram_matrix_prob = bigram_matrix_prob)
     
