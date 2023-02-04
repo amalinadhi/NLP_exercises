@@ -100,17 +100,16 @@ if __name__ == "__main__":
     # Read corpus
     FILENAME = "dataset/berkeley_restaurant_transcripts_small.csv"
     list_corpus = readData(filename = FILENAME)
-    #corpus_word_list, corpus_word_count = extractWordCorpus(list_corpus = list_corpus)
-    #print(len(corpus_word_list))
+
     # Train bigram
     bigram_matrix_prob = trainBigram(list_corpus = list_corpus)
 
     # Predict
-    #TEST = "can you give me"
-    #test_proba = predict(test = TEST,
-    #                     bigram_matrix_prob = bigram_matrix_prob)
+    TEST = "can you give me"
+    test_proba = predict(test = TEST,
+                         bigram_matrix_prob = bigram_matrix_prob)
     
-    #print(f"Sentence                : {TEST}")
-    #print(f"Probability to occur    : {test_proba:.4f}")
+    print(f"Sentence                : {TEST}")
+    print(f"Probability to occur    : {test_proba:.4f}")
 
     
