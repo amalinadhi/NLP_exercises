@@ -16,6 +16,7 @@ def extractUniqueWord(sentence):
     sentence = sentence.lower()
 
     # Obtain word list
+    #word_list = sentence.split(" ")   # if you training with non berkeley data
     word_list = sentence.split(" ")[1:]
 
     return word_list            
@@ -30,6 +31,14 @@ def extractWordCorpus(list_corpus):
         # Add word_list to corpus_word_list
         corpus_word_list += word_list
 
+    # Remove unused elements
+    # Use these depend on the case
+    corpus_word_list = [x for x in corpus_word_list if "." not in x]
+    corpus_word_list = [x for x in corpus_word_list if "<" not in x]
+    corpus_word_list = [x for x in corpus_word_list if "[" not in x]
+    corpus_word_list = [x for x in corpus_word_list if "_" not in x]
+    corpus_word_list = [x for x in corpus_word_list if "-" not in x]
+    
     # Remove duplicate words
     corpus_word_list, corpus_word_count = np.unique(corpus_word_list,
                                                     return_counts = True)
