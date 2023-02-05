@@ -2,6 +2,7 @@
 
 - Mainly from **Speech and Language Processing** -- Daniel Jurafsky & James H. Martin.
 - Codes are self-developed (of course it is simple without defense)
+- Learn with some fun
 
 ---
 
