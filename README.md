@@ -5,5 +5,5 @@
 
 ---
 
-1. [The **bigrams**](https://github.com/amalinadhi/NLP_exercises/blob/main/bigrams.py) - Chapter 3
+1. [The **Bigrams Model**](https://github.com/amalinadhi/NLP_exercises/blob/main/bigrams.py), a simple N-gram model - Chapter 3
 2. [The **Naive Bayes Classifier**](https://github.com/amalinadhi/NLP_exercises/blob/main/naive_bayes_classifier.py) - Chapter 4
