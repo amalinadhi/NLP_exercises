@@ -8,3 +8,4 @@
 
 1. [The **Bigrams Model**](https://github.com/amalinadhi/NLP_exercises/blob/main/bigrams.py), a simple N-gram model - Chapter 3
 2. [The **Naive Bayes Classifier**](https://github.com/amalinadhi/NLP_exercises/blob/main/naive_bayes_classifier.py) - Chapter 4
+3. [The **TF-IDF** word vectorizer](https://github.com/amalinadhi/NLP_exercises/blob/main/tf_idf.py) - Chapter 6
